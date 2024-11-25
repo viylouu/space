@@ -18,6 +18,12 @@
             }
 
             var synTree = syntree.parse(line);
+            var bndr = new binder();
+            var bndexpr = bndr.bindexpr(synTree.root);
+
+            var diags = synTree.diags.Concat(bndr.diags).ToArray();
+
+            //1:05:43
 
             if(tree) {
                 Console.ForegroundColor = ConsoleColor.DarkGray;
@@ -27,8 +33,8 @@
                 Console.ResetColor();
             }
 
-            if(!synTree.diags.Any()) {
-                var e = new evaler(synTree.root);
+            if(!diags.Any()) {
+                var e = new evaler(bndexpr);
                 var res = e.eval();
                 Console.WriteLine(res);
             } else {

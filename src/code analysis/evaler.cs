@@ -1,7 +1,7 @@
-﻿public sealed class evaler {
-    readonly exprsyn _root;
+﻿internal sealed class evaler {
+    readonly bndexpr _root;
 
-    public evaler(exprsyn root) { 
+    public evaler(bndexpr root) { 
         _root = root;
     }
 
@@ -9,39 +9,38 @@
         return evalexpr(_root);
     }
 
-    int evalexpr(exprsyn root) {
-        if(root is litexprsyn n)
-            return (int)n.littok.val;
+    int evalexpr(bndexpr root) {
+        if(root is bndlitexpr n)
+            return (int)n.val;
 
-        if(root is uniexprsyn u) {
+        if(root is bnduniexpr u) {
             var oand = evalexpr(u.oand);
 
-            if(u.oper.type == syntype.minustok)
-                return -oand;
-
-            throw new Exception($"unexpected unary operator! got <{u.oper.type}>");
-        }
-
-        if(root is binexprsyn b) {
-            var left = evalexpr(b.left);
-            var right = evalexpr(b.right);
-
-            switch(b.oper.type) {
-                case syntype.plustok:
-                    return left + right;
-                case syntype.minustok:
-                    return left - right;
-                case syntype.startok:
-                    return left * right;
-                case syntype.slashtok:
-                    return left / right;
+            switch(u.oper) {
+                case bnduniopertype.neg:
+                    return -oand;
                 default:
-                    throw new Exception($"unexpected binary operator! got <{b.oper.type}>");
+                    throw new Exception($"unexpected unary operator! got <{u.oper}>");
             }
         }
 
-        if(root is parenexprsyn p)
-            return evalexpr(p.expr);
+        if(root is bndbinexpr b) {
+            var left = evalexpr(b.left);
+            var right = evalexpr(b.right);
+
+            switch(b.oper) {
+                case bndbinopertype.add:
+                    return left + right;
+                case bndbinopertype.sub:
+                    return left - right;
+                case bndbinopertype.mul:
+                    return left * right;
+                case bndbinopertype.div:
+                    return left / right;
+                default:
+                    throw new Exception($"unexpected binary operator! got <{b.oper}>");
+            }
+        }
 
         throw new Exception($"unexpected node! got <{root.type}>");
     }
