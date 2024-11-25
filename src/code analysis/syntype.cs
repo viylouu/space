@@ -4,7 +4,7 @@
     uktok,        //unknown token
     wstok,        //whitespace
 
-    littok,       //literal
+    numtok,       //number
 
     plustok,      //+ (plus symbol)
     minustok,     //- (minus symbol)

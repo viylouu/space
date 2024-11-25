@@ -90,7 +90,7 @@
             return new parenexprsyn(left, expr, right); 
         }
 
-        var numTok = matchTok(syntype.littok);
+        var numTok = matchTok(syntype.numtok);
         return new litexprsyn(numTok);
     }
 }
