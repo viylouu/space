@@ -1,4 +1,4 @@
-﻿class main {
+﻿internal class main {
     static void Main() {
         bool tree = false;
 

@@ -1,4 +1,4 @@
-﻿sealed class parenexprsyn : exprsyn {
+﻿public sealed class parenexprsyn : exprsyn {
     public parenexprsyn(syntok openParen, exprsyn expr, syntok closeParen) {
         this.openParen = openParen;
         this.expr = expr;

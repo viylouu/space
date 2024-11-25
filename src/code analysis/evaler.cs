@@ -1,4 +1,4 @@
-﻿class evaler {
+﻿public sealed class evaler {
     readonly exprsyn _root;
 
     public evaler(exprsyn root) { 

@@ -1,4 +1,4 @@
-﻿sealed class binexprsyn : exprsyn {
+﻿public sealed class binexprsyn : exprsyn {
     public binexprsyn(exprsyn left, syntok oper, exprsyn right) {
         this.left = left;
         this.oper = oper;

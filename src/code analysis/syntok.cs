@@ -1,4 +1,4 @@
-﻿class syntok : synnode {
+﻿public sealed class syntok : synnode {
     public syntok(syntype type, int pos, string txt, object val) {
         this.type = type;
         this.pos = pos;

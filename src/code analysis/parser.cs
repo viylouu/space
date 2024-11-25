@@ -1,4 +1,4 @@
-﻿class parser {
+﻿internal sealed class parser {
     readonly syntok[] _toks;
     int _pos;
     List<string> _diags = new();

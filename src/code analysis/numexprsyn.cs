@@ -1,4 +1,4 @@
-﻿sealed class numexprsyn : exprsyn {
+﻿public sealed class numexprsyn : exprsyn {
     public numexprsyn(syntok numtok) {
         this.numtok = numtok;
     }

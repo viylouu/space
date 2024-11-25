@@ -1,4 +1,4 @@
-﻿class lexer {
+﻿internal sealed class lexer {
     readonly string _txt;
     int _pos;
     List<string> _diags = new();

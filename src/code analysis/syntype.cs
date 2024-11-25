@@ -1,4 +1,4 @@
-﻿enum syntype {
+﻿public enum syntype {
     eoftok,       //end of file
     numtok,       //number
     wstok,        //whitespace

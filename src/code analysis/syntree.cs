@@ -1,4 +1,4 @@
-﻿sealed class syntree {
+﻿public sealed class syntree {
     public syntree(IEnumerable<string> diags, exprsyn root, syntok eoftok) {
         this.root = root;
         this.eoftok = eoftok;

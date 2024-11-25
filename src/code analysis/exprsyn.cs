@@ -1,3 +1,3 @@
-﻿abstract class exprsyn : synnode {
+﻿public abstract class exprsyn : synnode {
 
 }
