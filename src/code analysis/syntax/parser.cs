@@ -57,9 +57,9 @@
         var uniprec = cur.type.getunioperprec();
 
         //had to mess around to make it not allow more than 1 negative because i said so
-        if(uniprec != 0 && uniprec > parPrec) {
+        if(uniprec != 0 && uniprec >/*=*/ parPrec) {
             var oper = nextTok();
-            var oand = parsepriexpr();
+            var oand = parsepriexpr();   //supposed to be parseexpr(parPrec);
             left = new uniexprsyn(oper,oand);
         } else
             left = parsepriexpr();
@@ -79,14 +79,22 @@
     }
 
     exprsyn parsepriexpr() {
-        if(cur.type == syntype.oparentok) {
-            var left = nextTok();
-            var expr = parseexpr();
-            var right = matchTok(syntype.cparentok);
-            return new parenexprsyn(left, expr, right); 
-        }
+        switch(cur.type) {
+            case syntype.oparentok:
+                var left = nextTok();
+                var expr = parseexpr();
+                var right = matchTok(syntype.cparentok);
+                return new parenexprsyn(left, expr, right);
 
-        var numTok = matchTok(syntype.numtok);
-        return new litexprsyn(numTok);
+            case syntype.falsekw:
+            case syntype.truekw:
+                var kwtok = nextTok();
+                var val = kwtok.type == syntype.truekw;
+                return new litexprsyn(kwtok, val);
+
+            default:
+                var numTok = matchTok(syntype.numtok);
+                return new litexprsyn(numTok);
+        }
     }
 }

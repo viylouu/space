@@ -18,9 +18,9 @@
     }
 
     bndexpr bindlitexpr(litexprsyn syn) {
-        var val = syn.littok.val as int? ?? 0;
+        var val = syn.val ?? 0;
 
-       return new bndlitexpr(val);
+        return new bndlitexpr(val);
     }
 
     bndexpr bindbinexpr(binexprsyn syn) {
@@ -29,7 +29,7 @@
         var bndoper = bindbinopertype(syn.oper.type, bndleft.cstype, bndright.cstype);
 
         if(bndoper == null) {
-            _diags.Add($"binary operator '{syn.oper.txt}' is not defined for types <{bndleft.type}> and <{bndright.type}>");
+            _diags.Add($"binary operator '{syn.oper.txt}' is not defined for types <{bndleft.cstype}> and <{bndright.cstype}>");
             return bndleft;
         }
 
@@ -41,7 +41,7 @@
         var bndoper = binduniopertype(syn.oper.type, bndoand.cstype);
 
         if(bndoper == null) {
-            _diags.Add($"unary operator '{syn.oper.txt}' is not defined for type <{bndoand.type}>");
+            _diags.Add($"unary operator '{syn.oper.txt}' is not defined for type <{bndoand.cstype}>");
             return bndoand;
         }
         
@@ -49,32 +49,46 @@
     }
 
     bnduniopertype? binduniopertype(syntype type, Type oandcstype) {
-        if(oandcstype != typeof(int))
-            return null;
+        if(oandcstype == typeof(int))
+            switch(type) {
+                case syntype.minustok:
+                    return bnduniopertype.neg;
+            }
 
-        switch(type) {
-            case syntype.minustok:
-                return bnduniopertype.neg;
-            default:
-                throw new Exception($"unexpected unary operator! got <{type}>");
-        }
+        if(oandcstype == typeof(bool))
+            switch(type) {
+                case syntype.bangtok:
+                    return bnduniopertype.logneg;
+            }
+
+        return null;
     }
 
     bndbinopertype? bindbinopertype(syntype type, Type leftcstype, Type rightcstype) {
-        if(leftcstype != typeof(int) || rightcstype != typeof(int))
-            return null;
+        if(leftcstype == typeof(int) && rightcstype == typeof(int))
+            switch(type) {
+                case syntype.plustok:
+                    return bndbinopertype.add;
+                case syntype.minustok:
+                    return bndbinopertype.sub;
+                case syntype.startok:
+                    return bndbinopertype.mul;
+                case syntype.slashtok:
+                    return bndbinopertype.div;
+                default:
+                    throw new Exception($"unexpected binary operator! got <{type}>");
+            }
 
-        switch(type) {
-            case syntype.plustok:
-                return bndbinopertype.add;
-            case syntype.minustok:
-                return bndbinopertype.sub;
-            case syntype.startok:
-                return bndbinopertype.mul;
-            case syntype.slashtok:
-                return bndbinopertype.div;
-            default:
-                throw new Exception($"unexpected binary operator! got <{type}>");
-        }
+        if(leftcstype == typeof(bool) && rightcstype == typeof(bool))
+            switch(type) {
+                case syntype.ampamptok:
+                    return bndbinopertype.logand;
+                case syntype.barbartok:
+                    return bndbinopertype.logor;
+                default:
+                    throw new Exception($"unexpected binary operator! got <{type}>");
+            }
+
+        return null;
     }
 }

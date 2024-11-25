@@ -9,13 +9,17 @@
 
     public IEnumerable<string> diags => _diags;
 
-    char cur {
-        get {
-            if(_pos >= _txt.Length)
+    char cur => peek(0);
+
+    char ahead => peek(1);
+
+    char peek(int off) {
+        var ind = _pos+off;
+
+        if(ind >= _txt.Length)
                 return '\0';
 
-            return _txt[_pos];
-        }
+        return _txt[_pos];
     }
 
     void next() => _pos++;
@@ -51,6 +55,20 @@
             return new(syntype.wstok, start, text, null);
         }
 
+        if(char.IsLetter(cur)) {
+            var start = _pos;
+
+            while(char.IsLetter(cur))
+                next();
+
+            var len = _pos - start;
+            var text = _txt.Substring(start, len);
+
+            var type = synfacts.getkwtype(text);
+
+            return new(type, start, text, null);
+        }
+
         switch(cur) {
             case '+':
                 return new(syntype.plustok, _pos++, "+", null);
@@ -64,6 +82,17 @@
                 return new(syntype.oparentok, _pos++, "(", null);
             case ')':
                 return new(syntype.cparentok, _pos++, ")", null);
+
+            case '!':
+                return new(syntype.bangtok, _pos++, "!", null);
+            case '&':
+                if(ahead == '&')
+                    return new(syntype.ampamptok, _pos += 2, "&&", null);
+                return new(syntype.amptok, _pos++, "&", null);
+            case '|':
+                if(ahead == '|')
+                    return new(syntype.barbartok, _pos += 2, "||", null);
+                return new(syntype.bartok, _pos++, "|", null);
         }
 
         _diags.Add($"err: unknown char in input: '{cur}'");

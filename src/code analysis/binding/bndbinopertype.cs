@@ -2,5 +2,7 @@
     add,
     sub,
     mul,
-    div
+    div,
+    logand,
+    logor
 }

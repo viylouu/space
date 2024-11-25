@@ -1,3 +1,4 @@
 ﻿internal enum bnduniopertype { 
-    neg
+    neg,
+    logneg
 }
