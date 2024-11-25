@@ -1,4 +1,5 @@
 ﻿internal enum bndnodetype {
     uniexpr,
-    litexpr
+    litexpr,
+    binexpr
 }

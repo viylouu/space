@@ -5,7 +5,7 @@
         this.right = right;
     }
 
-    public override bndnodetype type => bndnodetype.uniexpr;
+    public override bndnodetype type => bndnodetype.binexpr;
     public override Type cstype => oper.rescstype;
     public bndexpr left { get; }
     public bndbinoper oper { get; }

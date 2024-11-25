@@ -11,7 +11,9 @@
                 return bindbinexpr((binexprsyn)syn);
             case syntype.uniexpr:
                 return binduniexpr((uniexprsyn)syn);
-            
+            case syntype.parenexpr:
+                return bindexpr(((parenexprsyn)syn).expr);
+
             default:
                 throw new Exception($"unexpected syntax! got <{syn.type}>");
         }
