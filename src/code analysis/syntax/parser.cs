@@ -56,10 +56,9 @@
         exprsyn left;
         var uniprec = cur.type.getunioperprec();
 
-        //had to mess around to make it not allow more than 1 negative because i said so
-        if(uniprec != 0 && uniprec >/*=*/ parPrec) {
+        if(uniprec != 0 && uniprec >= parPrec) {
             var oper = nextTok();
-            var oand = parsepriexpr();   //supposed to be parseexpr(parPrec);
+            var oand = parseexpr(parPrec);
             left = new uniexprsyn(oper,oand);
         } else
             left = parsepriexpr();

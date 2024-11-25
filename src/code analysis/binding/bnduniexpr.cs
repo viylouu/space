@@ -5,7 +5,7 @@
     }
 
     public override bndnodetype type => bndnodetype.uniexpr;
-    public override Type cstype => oand.cstype;
+    public override Type cstype => oper.rescstype;
     public bndunioper oper { get; }
     public bndexpr oand { get; }
 }

@@ -83,8 +83,6 @@
             case ')':
                 return new(syntype.cparentok, _pos++, ")", null);
 
-            case '!':
-                return new(syntype.bangtok, _pos++, "!", null);
             case '&':
                 if(ahead == '&')
                     return new(syntype.ampamptok, _pos += 2, "&&", null);
@@ -93,6 +91,14 @@
                 if(ahead == '|')
                     return new(syntype.barbartok, _pos += 2, "||", null);
                 return new(syntype.bartok, _pos++, "|", null);
+            case '=':
+                if(ahead == '=')
+                    return new(syntype.eqeqtok, _pos += 2, "==", null);
+                break;
+            case '!':
+                if(ahead == '=')
+                    return new(syntype.bangeqtok, _pos += 2, "!=", null);
+                return new(syntype.bangtok, _pos++, "!", null);
         }
 
         _diags.Add($"err: unknown char in input: '{cur}'");

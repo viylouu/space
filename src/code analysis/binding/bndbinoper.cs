@@ -1,6 +1,8 @@
 ﻿internal sealed class bndbinoper {
     bndbinoper(syntype stype, bndbinopertype type, Type cstype) : this(stype, type, cstype, cstype, cstype) { }
 
+    bndbinoper(syntype stype, bndbinopertype type, Type oandcstype, Type rescstype) : this(stype, type, oandcstype, oandcstype, rescstype) { }
+
     bndbinoper(syntype stype, bndbinopertype type, Type leftcstype, Type rightcstype, Type rescstype) {
         this.stype = stype;
         this.type = type;
@@ -21,8 +23,13 @@
         new(syntype.startok, bndbinopertype.mul, typeof(int)),
         new(syntype.slashtok, bndbinopertype.div, typeof(int)),
 
+        new(syntype.eqeqtok, bndbinopertype.eq, typeof(int), typeof(bool)),
+        new(syntype.bangeqtok, bndbinopertype.noteq, typeof(int), typeof(bool)),
+
         new(syntype.ampamptok, bndbinopertype.logand, typeof(bool)),
         new(syntype.barbartok, bndbinopertype.logor, typeof(bool)),
+        new(syntype.eqeqtok, bndbinopertype.eq, typeof(bool)),
+        new(syntype.bangeqtok, bndbinopertype.noteq, typeof(bool)),
     };
 
     public static bndbinoper bind(syntype stype, Type leftcstype, Type rightcstype) {

@@ -43,6 +43,10 @@
                     return (bool)left && (bool)right;
                 case bndbinopertype.logor:
                     return (bool)left || (bool)right;
+                case bndbinopertype.eq:
+                    return Equals(left, right);
+                case bndbinopertype.noteq:
+                    return !Equals(left, right);
                 default:
                     throw new Exception($"unexpected binary operator! got <{b.oper}>");
             }

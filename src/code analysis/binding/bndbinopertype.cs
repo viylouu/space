@@ -4,5 +4,7 @@
     mul,
     div,
     logand,
-    logor
+    logor,
+    eq,
+    noteq
 }

@@ -33,4 +33,6 @@
     //keywords
     truekw,       //true keyword
     falsekw,      //false keyword
+    eqeqtok,
+    bangeqtok,
 }

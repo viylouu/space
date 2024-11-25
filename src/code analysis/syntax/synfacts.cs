@@ -3,10 +3,14 @@
         switch(type) {
             case syntype.startok:
             case syntype.slashtok:
-                return 4;
+                return 5;
 
             case syntype.plustok:
             case syntype.minustok:
+                return 4;
+
+            case syntype.eqeqtok:
+            case syntype.bangeqtok:
                 return 3;
 
             case syntype.ampamptok:
@@ -24,7 +28,7 @@
         switch(type) {
             case syntype.bangtok:
             case syntype.minustok:
-                return 5;
+                return 6;
 
             default:
                 return 0;
