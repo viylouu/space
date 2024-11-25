@@ -12,7 +12,7 @@
 
         syntok tok;
         do {
-            tok = lex.nextTox();
+            tok = lex.lex();
 
             if(tok.type != syntype.wstok &&
                tok.type != syntype.uktok)

@@ -20,7 +20,7 @@
 
     void next() => _pos++;
 
-    public syntok nextTox() {
+    public syntok lex() {
         if(_pos >= _txt.Length)
             return new(syntype.eoftok, _pos, "\0", null);
 
@@ -51,20 +51,22 @@
             return new(syntype.wstok, start, text, null);
         }
 
-        if(cur == '+')
-            return new(syntype.plustok, _pos++, "+", null);
-        else if(cur == '-')
-            return new(syntype.minustok, _pos++, "-", null);
-        else if(cur == '*')
-            return new(syntype.startok, _pos++, "*", null);
-        else if(cur == '/')
-            return new(syntype.slashtok, _pos++, "/", null);
-        else if(cur == '(')
-            return new(syntype.oparentok, _pos++, "(", null);
-        else if(cur == ')')
-            return new(syntype.cparentok, _pos++, ")", null);
+        switch(cur) {
+            case '+':
+                return new(syntype.plustok, _pos++, "+", null);
+            case '-':
+                return new(syntype.minustok, _pos++, "-", null);
+            case '*':
+                return new(syntype.startok, _pos++, "*", null);
+            case '/':
+                return new(syntype.slashtok, _pos++, "/", null);
+            case '(':
+                return new(syntype.oparentok, _pos++, "(", null);
+            case ')':
+                return new(syntype.cparentok, _pos++, ")", null);
+        }
 
-        _diags.Add($"err: bad char in input: '{cur}'");
+        _diags.Add($"err: unknown char in input: '{cur}'");
         return new(syntype.uktok, _pos++, _txt.Substring(_pos - 1, 1), null);
     }
 }
