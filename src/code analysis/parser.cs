@@ -56,7 +56,7 @@
         var left = parsepriexpr();
 
         while(true) {
-            var prec = getbinoperprec(cur.type);
+            var prec = cur.type.getbinoperprec();
 
             if(prec == 0 || prec <= parPrec)
                 break;
@@ -67,21 +67,6 @@
         }
 
         return left;
-    }
-
-    static int getbinoperprec(syntype type) {
-        switch(type) {
-            case syntype.plustok:
-            case syntype.minustok:
-                return 1;
-
-            case syntype.startok:
-            case syntype.slashtok:
-                return 2;
-
-            default:
-                return 0;
-        }
     }
 
     exprsyn parsepriexpr() {
