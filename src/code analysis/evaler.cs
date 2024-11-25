@@ -13,6 +13,15 @@
         if(root is litexprsyn n)
             return (int)n.littok.val;
 
+        if(root is uniexprsyn u) {
+            var oand = evalexpr(u.oand);
+
+            if(u.oper.type == syntype.minustok)
+                return -oand;
+
+            throw new Exception($"unexpected unary operator! got <{u.oper.type}>");
+        }
+
         if(root is binexprsyn b) {
             var left = evalexpr(b.left);
             var right = evalexpr(b.right);

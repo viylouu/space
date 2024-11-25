@@ -13,4 +13,14 @@
                 return 0;
         }
     }
+
+    public static int getunioperprec(this syntype type) {
+        switch(type) {
+            case syntype.minustok:
+                return 3;
+
+            default:
+                return 0;
+        }
+    }
 }

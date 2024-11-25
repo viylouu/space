@@ -53,7 +53,16 @@
     }
 
     exprsyn parseexpr(int parPrec = 0) {
-        var left = parsepriexpr();
+        exprsyn left;
+        var uniprec = cur.type.getunioperprec();
+
+        //had to mess around to make it not allow more than 1 negative because i said so
+        if(uniprec != 0 && uniprec > parPrec) {
+            var oper = nextTok();
+            var oand = parsepriexpr();
+            left = new uniexprsyn(oper,oand);
+        } else
+            left = parsepriexpr();
 
         while(true) {
             var prec = cur.type.getbinoperprec();
@@ -61,9 +70,9 @@
             if(prec == 0 || prec <= parPrec)
                 break;
 
-            var opertok = nextTok();
+            var oper = nextTok();
             var right = parseexpr(prec);
-            left = new binexprsyn(left,opertok,right);
+            left = new binexprsyn(left,oper,right);
         }
 
         return left;

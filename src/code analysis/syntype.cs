@@ -17,5 +17,6 @@
     //exprs
     litexpr,      //literal expression
     binexpr,      //binary expression
+    uniexpr,      //unary expression
     parenexpr     //parenthesis expression
 }
