@@ -26,69 +26,25 @@
     bndexpr bindbinexpr(binexprsyn syn) {
         var bndleft = bindexpr(syn.left);
         var bndright = bindexpr(syn.right);
-        var bndoper = bindbinopertype(syn.oper.type, bndleft.cstype, bndright.cstype);
+        var bndoper = bndbinoper.bind(syn.oper.type, bndleft.cstype, bndright.cstype);
 
         if(bndoper == null) {
             _diags.Add($"binary operator '{syn.oper.txt}' is not defined for types <{bndleft.cstype}> and <{bndright.cstype}>");
             return bndleft;
         }
 
-        return new bndbinexpr(bndleft, bndoper.Value, bndright);
+        return new bndbinexpr(bndleft, bndoper, bndright);
     }
 
     bndexpr binduniexpr(uniexprsyn syn) {
         var bndoand = bindexpr(syn.oand);
-        var bndoper = binduniopertype(syn.oper.type, bndoand.cstype);
+        var bndoper = bndunioper.bind(syn.oper.type, bndoand.cstype);
 
         if(bndoper == null) {
             _diags.Add($"unary operator '{syn.oper.txt}' is not defined for type <{bndoand.cstype}>");
             return bndoand;
         }
         
-        return new bnduniexpr(bndoper.Value, bndoand);
-    }
-
-    bnduniopertype? binduniopertype(syntype type, Type oandcstype) {
-        if(oandcstype == typeof(int))
-            switch(type) {
-                case syntype.minustok:
-                    return bnduniopertype.neg;
-            }
-
-        if(oandcstype == typeof(bool))
-            switch(type) {
-                case syntype.bangtok:
-                    return bnduniopertype.logneg;
-            }
-
-        return null;
-    }
-
-    bndbinopertype? bindbinopertype(syntype type, Type leftcstype, Type rightcstype) {
-        if(leftcstype == typeof(int) && rightcstype == typeof(int))
-            switch(type) {
-                case syntype.plustok:
-                    return bndbinopertype.add;
-                case syntype.minustok:
-                    return bndbinopertype.sub;
-                case syntype.startok:
-                    return bndbinopertype.mul;
-                case syntype.slashtok:
-                    return bndbinopertype.div;
-                default:
-                    throw new Exception($"unexpected binary operator! got <{type}>");
-            }
-
-        if(leftcstype == typeof(bool) && rightcstype == typeof(bool))
-            switch(type) {
-                case syntype.ampamptok:
-                    return bndbinopertype.logand;
-                case syntype.barbartok:
-                    return bndbinopertype.logor;
-                default:
-                    throw new Exception($"unexpected binary operator! got <{type}>");
-            }
-
-        return null;
+        return new bnduniexpr(bndoper, bndoand);
     }
 }

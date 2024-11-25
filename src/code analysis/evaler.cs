@@ -16,7 +16,7 @@
         if(root is bnduniexpr u) {
             var oand = evalexpr(u.oand);
 
-            switch(u.oper) {
+            switch(u.oper.type) {
                 case bnduniopertype.neg:
                     return -(int)oand;
                 case bnduniopertype.logneg:
@@ -30,7 +30,7 @@
             var left = evalexpr(b.left);
             var right = evalexpr(b.right);
 
-            switch(b.oper) {
+            switch(b.oper.type) {
                 case bndbinopertype.add:
                     return (int)left + (int)right;
                 case bndbinopertype.sub:
