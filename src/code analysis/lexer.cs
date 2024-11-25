@@ -36,7 +36,7 @@
             if(!int.TryParse(text, out var val))
                 _diags.Add($"err: the num {_txt} is not a valid i32");
 
-            return new(syntype.numtok, start, text, val);
+            return new(syntype.littok, start, text, val);
         }
 
         if(char.IsWhiteSpace(cur)) {

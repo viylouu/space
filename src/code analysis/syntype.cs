@@ -4,7 +4,7 @@
     uktok,        //unknown token
     wstok,        //whitespace
 
-    numtok,       //number
+    littok,       //literal
 
     plustok,      //+ (plus symbol)
     minustok,     //- (minus symbol)
@@ -15,7 +15,7 @@
     cparentok,    //closed parenthesis ')'
 
     //exprs
-    numexpr,      //number expression
+    litexpr,      //literal expression
     binexpr,      //binary expression
     parenexpr     //parenthesis expression
 }

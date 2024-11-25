@@ -3,7 +3,7 @@
         this.littok = littok;
     }
 
-    public override syntype type => syntype.numexpr;
+    public override syntype type => syntype.litexpr;
 
     public syntok littok { get; }
 
