@@ -52,37 +52,39 @@
         return new syntree(_diags, expr, eoftok);
     }
 
-    exprsyn parseexpr() {
-        return parseterm();
-    }
+    exprsyn parseexpr(int parPrec = 0) {
+        var left = parsepriexpr();
 
-    exprsyn parseterm() { 
-        var left = parsefac();
+        while(true) {
+            var prec = getbinoperprec(cur.type);
 
-        while(cur.type == syntype.plustok ||
-              cur.type == syntype.minustok) {
+            if(prec == 0 || prec <= parPrec)
+                break;
+
             var opertok = nextTok();
-            var right = parsefac();
-            left = new binexprsyn(left, opertok, right);
+            var right = parseexpr(prec);
+            left = new binexprsyn(left,opertok,right);
         }
 
         return left;
     }
 
-    exprsyn parsefac() {
-        var left = parseprimexpr();
+    static int getbinoperprec(syntype type) {
+        switch(type) {
+            case syntype.plustok:
+            case syntype.minustok:
+                return 1;
 
-        while(cur.type == syntype.startok ||
-              cur.type == syntype.slashtok) {
-            var opertok = nextTok();
-            var right = parseprimexpr();
-            left = new binexprsyn(left, opertok, right);
+            case syntype.startok:
+            case syntype.slashtok:
+                return 2;
+
+            default:
+                return 0;
         }
-
-        return left;
     }
 
-    exprsyn parseprimexpr() {
+    exprsyn parsepriexpr() {
         if(cur.type == syntype.oparentok) {
             var left = nextTok();
             var expr = parseexpr();
