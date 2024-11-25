@@ -1,13 +1,13 @@
 ﻿internal sealed class lexer {
     readonly string _txt;
     int _pos;
-    List<string> _diags = new();
+    diagbag _diags = new();
 
     public lexer(string txt) {
         _txt = txt;
     }
 
-    public IEnumerable<string> diags => _diags;
+    public diagbag diags => _diags;
 
     char cur => peek(0);
 
@@ -38,7 +38,7 @@
             var text = _txt.Substring(start, len);
 
             if(!int.TryParse(text, out var val))
-                _diags.Add($"err: the num {_txt} is not a valid i32");
+                _diags.report_invalid_num(new txtspan(start, len), _txt, typeof(int));
 
             return new(syntype.numtok, start, text, val);
         }
@@ -101,7 +101,7 @@
                 return new(syntype.bangtok, _pos++, "!", null);
         }
 
-        _diags.Add($"err: unknown char in input: '{cur}'");
+        _diags.report_bad_char(_pos, cur);
         return new(syntype.uktok, _pos++, _txt.Substring(_pos - 1, 1), null);
     }
 }

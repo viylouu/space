@@ -1,9 +1,9 @@
 ﻿internal sealed class parser {
     readonly syntok[] _toks;
     int _pos;
-    List<string> _diags = new();
+    diagbag _diags = new();
 
-    public IEnumerable<string> diags => _diags;
+    public diagbag diags => _diags;
 
     public parser(string txt) {
         var toks = new List<syntok>();
@@ -42,7 +42,7 @@
         if(cur.type == type)
             return nextTok();
 
-        _diags.Add($"err: unexpected token: <{cur.type}>, expected type <{type}>");
+        _diags.report_unex_tok(cur.span, cur.type, type);
         return new(type, cur.pos, null, null);
     }
 

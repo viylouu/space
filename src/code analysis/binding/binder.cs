@@ -1,7 +1,7 @@
 ﻿internal sealed class binder {
-    readonly List<string> _diags = new();
+    readonly diagbag _diags = new();
 
-    public IEnumerable<string> diags => _diags;
+    public diagbag diags => _diags;
 
     public bndexpr bindexpr(exprsyn syn) {
         switch(syn.type) {
@@ -31,7 +31,7 @@
         var bndoper = bndbinoper.bind(syn.oper.type, bndleft.cstype, bndright.cstype);
 
         if(bndoper == null) {
-            _diags.Add($"binary operator '{syn.oper.txt}' is not defined for types <{bndleft.cstype}> and <{bndright.cstype}>");
+            _diags.report_undef_bin_oper(syn.oper.span, syn.oper.txt, bndleft.cstype, bndright.cstype);
             return bndleft;
         }
 
@@ -43,7 +43,7 @@
         var bndoper = bndunioper.bind(syn.oper.type, bndoand.cstype);
 
         if(bndoper == null) {
-            _diags.Add($"unary operator '{syn.oper.txt}' is not defined for type <{bndoand.cstype}>");
+            _diags.report_undef_uni_oper(syn.oper.span, syn.oper.txt, bndoand.cstype);
             return bndoand;
         }
         

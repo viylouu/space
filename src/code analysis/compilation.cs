@@ -15,6 +15,6 @@
 
         var evaler = new evaler(bndexpr);
         var val = evaler.eval();
-        return new evalres(Array.Empty<string>(), val);
+        return new evalres(Array.Empty<diag>(), val);
     }
 }
