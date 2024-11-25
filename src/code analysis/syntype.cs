@@ -1,15 +1,20 @@
 ﻿public enum syntype {
+    //toks
     eoftok,       //end of file
-    numtok,       //number
+    uktok,        //unknown token
     wstok,        //whitespace
+
+    numtok,       //number
+
     plustok,      //+ (plus symbol)
     minustok,     //- (minus symbol)
     startok,      //* (multiplication symbol)
     slashtok,     //'/' (division symbol)
+
     oparentok,    //open parenthesis '('
     cparentok,    //closed parenthesis ')'
-    uktok,        //unknown token
 
+    //exprs
     numexpr,      //number expression
     binexpr,      //binary expression
     parenexpr     //parenthesis expression

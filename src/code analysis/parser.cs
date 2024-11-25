@@ -38,7 +38,7 @@
         return _cur;
     }
 
-    syntok match(syntype type) {
+    syntok matchTok(syntype type) {
         if(cur.type == type)
             return nextTok();
 
@@ -46,14 +46,14 @@
         return new(type, cur.pos, null, null);
     }
 
-    exprsyn parseexpr() {
-        return parseterm();
-    }
-
     public syntree parse() {
         var expr = parseexpr();
-        var eoftok = match(syntype.eoftok);
+        var eoftok = matchTok(syntype.eoftok);
         return new syntree(_diags, expr, eoftok);
+    }
+
+    exprsyn parseexpr() {
+        return parseterm();
     }
 
     exprsyn parseterm() { 
@@ -86,11 +86,11 @@
         if(cur.type == syntype.oparentok) {
             var left = nextTok();
             var expr = parseexpr();
-            var right = match(syntype.cparentok);
+            var right = matchTok(syntype.cparentok);
             return new parenexprsyn(left, expr, right); 
         }
 
-        var numTok = match(syntype.numtok);
-        return new numexprsyn(numTok);
+        var numTok = matchTok(syntype.numtok);
+        return new litexprsyn(numTok);
     }
 }

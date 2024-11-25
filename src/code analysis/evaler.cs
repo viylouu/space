@@ -10,8 +10,8 @@
     }
 
     int evalexpr(exprsyn root) {
-        if(root is numexprsyn n)
-            return (int)n.numtok.val;
+        if(root is litexprsyn n)
+            return (int)n.littok.val;
 
         if(root is binexprsyn b) {
             var left = evalexpr(b.left);
