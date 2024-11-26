@@ -21,7 +21,9 @@
     eqeqtok,      //double equals
     bangeqtok,    //not equals
 
-    eqtok,        //assignment token
+    colgreattok,  //colon greater than token ':>'
+    coltok,       //colon token ':'
+    colcoltok,    //colon colon token '::'
 
     oparentok,    //open parenthesis '('
     cparentok,    //closed parenthesis ')'

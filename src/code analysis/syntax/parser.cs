@@ -58,7 +58,7 @@
 
     exprsyn parseassignexpr() {
         if(peek(0).type == syntype.identtok &&
-           peek(1).type == syntype.eqtok) {
+           peek(1).type == syntype.colgreattok) {
             var identtok = nextTok();
             var opertok = nextTok();
             var right = parseassignexpr();

@@ -101,10 +101,10 @@
                 return new(syntype.bangtok, _pos++, "!", null);
             case ':':
                 if(ahead == '>')
-                    return new(syntype.eqtok, _pos += 2, ":>", null);
+                    return new(syntype.colgreattok, _pos += 2, ":>", null);
                 else if(ahead == ':')
-                    throw new NotImplementedException();
-                throw new NotImplementedException();
+                    return new(syntype.colcoltok, _pos += 2, "::", null);           //not implemented
+                return new(syntype.coltok, _pos++, ":", null);                      //not implemented
         }
 
         _diags.report_bad_char(_pos, cur);
