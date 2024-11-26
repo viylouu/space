@@ -5,13 +5,13 @@ a custom language
 how to use
 
 ```
-;; single line comment
+~ single line comment
 
-;. multi
+~{ multi
    line
-   comment .;
+   comment }~
 
-;. types
+~{ types
 
 ui8     unsigned 8 bit integer
 ui16    unsigned 16 bit integer
@@ -47,18 +47,18 @@ uiv2   Unsigned Integer Vector 2
 uiv3   Unsigned Integer Vector 3
 uiv4   Unsigned Integer Vector 4
 
-.;
+}~
 
-;. keywords
+~{ keywords
 
-enm    enum
+enum   enum
 
 fn     function
 rfn    function with a return type
 
-.;
+}~
 
-;. operators
+~{ operators
 
 +     plus
 -     minus
@@ -69,71 +69,70 @@ unary
 
 -     negative
 
-.;
+}~
 
-;; "hello_world.orbt"
+~ "hello_world.orbt"
 
-;; space represents making a class
+~ space represents making a class
 
 space helloworld {
-    ;; fn makes a non returning function
+    ~ fn makes a non returning function
     fn main() {
-        ;; spk works just like writeline
+        ~ spk works just like writeline
 
-        ;; makes a new var of type string and sets the value to the function's return
+        ~ makes a new var of type string and sets the value to the function's return
         texttosay: str :> text("World")
 
         spk(texttosay)
 
-        ;;for loop example
-        for(i: i32, 0,100)
-            spk(;"hi {i}")
+        ~ say hi, but only say even numbers
+        for(i: i32, 0 ~> 100, 2)
+            spk(f"hi {i}")
 
-        ;;backwards for loop
-        for(i: i32 :> 100, >0, --)
-            spk(;"bye {i}")
+        ~ backwards for loop
+        for(i: i32, 100 <~ 0)
+            spk(f"bye {i}")
 
         a: i64 :> 1
 
-        ;;square a and subtract 1 from a every time
-        for(i: i32, 0, 100) {
-            ;;set a to a *= a
+        ~ square a and subtract 1 from a every time
+        for(i: i32, 0 ~> 100) {
+            ~ set a to 'a *= a'
             a :> * a
-            ;;subtract from a
+            ~ subtract from a
             a :> --
             spk(a)
         }
     }
 
-    ;; rfn makes a function with a return type noted after rfn
+    ~ rfn makes a function with a return type noted after rfn
     rfn str text(txt: str) {
-        ;; typing i before the string makes it concat the string with the inputs
-        ;; string concats allow for string inputs aswel
-        ret i"Hello {txt}!"
+        ~ putting f makes it so you can do "text {input} text {input}"
+        ret f"Hello {txt}!"
     }
 
-    ;; fibonacci example
+    ~ fibonacci example
     rfn i32 fib(n: i32) {
         ret (n < 2) :: n ` fib(n-1)+fib(n-2)
     }
 
-    ;; example of func on one line
-    fn 1plus_a(r -> a: i32) :> a++
+    ~ example of func on one line
+    fn 1plus_a(&a: i32) :> a :> ++
 
-    ;.
+    ~{
         can be
 
-        fn 1plus_a(r -> a: i32) :> a++
+        fn 1plus_a(&a: i32) :> a :> ++
 
         or
 
-        fn 1plus_a(r -> a: i32) :> 
-            a++
+        fn 1plus_a(&a: i32) :> 
+            a :> ++
 
         or
 
-        fn 1plus_a(r -> a: i32) 
-            :> a++
-    .;
+        fn 1plus_a(&a: i32) 
+            :> a :> ++
+    }~
 }
 ```
