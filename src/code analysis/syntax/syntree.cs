@@ -13,4 +13,17 @@
         var parser = new parser(text);
         return parser.parse();
     }
+
+    public static IEnumerable<syntok> parsetoks(string text) {
+        var lexer = new lexer(text);
+
+        while(true) {
+            var tok = lexer.lex();
+
+            if(tok.type == syntype.eoftok)
+                break;
+
+            yield return tok;
+        }
+    }
 }
