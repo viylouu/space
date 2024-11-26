@@ -18,6 +18,10 @@
 
     ampamptok,    //double ampersand
     barbartok,    //double bar
+    eqeqtok,      //double equals
+    bangeqtok,    //not equals
+
+    eqtok,        //assignment token
 
     oparentok,    //open parenthesis '('
     cparentok,    //closed parenthesis ')'
@@ -29,10 +33,10 @@
     binexpr,      //binary expression
     uniexpr,      //unary expression
     parenexpr,    //parenthesis expression
+    nameexpr,     //name expression
+    assignexpr,   //assignment expression
 
     //keywords
     truekw,       //true keyword
     falsekw,      //false keyword
-    eqeqtok,
-    bangeqtok,
 }

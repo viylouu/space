@@ -36,8 +36,13 @@ internal sealed class diagbag : IEnumerable<diag> {
         report(span, msg);
     }
 
-    internal void report_undef_bin_oper(txtspan span, string opertxt, Type leftcstype, Type rightcstype) {
+    public void report_undef_bin_oper(txtspan span, string opertxt, Type leftcstype, Type rightcstype) {
         var msg = $"binary operator '{opertxt}' is not defined for types <{leftcstype}> and <{rightcstype}>";
+        report(span, msg);
+    }
+
+    public void report_undef_name(txtspan span, string name) {
+        var msg = $"variable '{name}' doesent exist";
         report(span, msg);
     }
 }

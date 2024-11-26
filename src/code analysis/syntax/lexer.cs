@@ -17,9 +17,9 @@
         var ind = _pos+off;
 
         if(ind >= _txt.Length)
-                return '\0';
+            return '\0';
 
-        return _txt[_pos];
+        return _txt[ind];
     }
 
     void next() => _pos++;
@@ -99,6 +99,12 @@
                 if(ahead == '=')
                     return new(syntype.bangeqtok, _pos += 2, "!=", null);
                 return new(syntype.bangtok, _pos++, "!", null);
+            case ':':
+                if(ahead == '>')
+                    return new(syntype.eqtok, _pos += 2, ":>", null);
+                else if(ahead == ':')
+                    throw new NotImplementedException();
+                throw new NotImplementedException();
         }
 
         _diags.report_bad_char(_pos, cur);

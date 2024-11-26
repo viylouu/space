@@ -52,13 +52,29 @@
         return new syntree(_diags, expr, eoftok);
     }
 
-    exprsyn parseexpr(int parPrec = 0) {
+    exprsyn parseexpr() {
+        return parseassignexpr();
+    }
+
+    exprsyn parseassignexpr() {
+        if(peek(0).type == syntype.identtok &&
+           peek(1).type == syntype.eqtok) {
+            var identtok = nextTok();
+            var opertok = nextTok();
+            var right = parseassignexpr();
+            return new assignexprsyn(identtok, opertok, right);
+        }
+
+        return parsebinexpr();
+    }
+
+    exprsyn parsebinexpr(int parPrec = 0) {
         exprsyn left;
         var uniprec = cur.type.getunioperprec();
 
         if(uniprec != 0 && uniprec >= parPrec) {
             var oper = nextTok();
-            var oand = parseexpr(parPrec);
+            var oand = parsebinexpr(parPrec);
             left = new uniexprsyn(oper,oand);
         } else
             left = parsepriexpr();
@@ -70,7 +86,7 @@
                 break;
 
             var oper = nextTok();
-            var right = parseexpr(prec);
+            var right = parsebinexpr(prec);
             left = new binexprsyn(left,oper,right);
         }
 
@@ -90,6 +106,10 @@
                 var kwtok = nextTok();
                 var val = kwtok.type == syntype.truekw;
                 return new litexprsyn(kwtok, val);
+
+            case syntype.identtok:
+                var ident = nextTok();
+                return new nameexprsyn(ident);
 
             default:
                 var numTok = matchTok(syntype.numtok);

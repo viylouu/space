@@ -1,8 +1,10 @@
 ﻿internal sealed class evaler {
     readonly bndexpr _root;
+    readonly Dictionary<string, object> vars;
 
-    public evaler(bndexpr root) { 
+    public evaler(bndexpr root, Dictionary<string, object> vars) { 
         _root = root;
+        this.vars = vars;
     }
 
     public object eval() {
@@ -12,6 +14,15 @@
     object evalexpr(bndexpr root) {
         if(root is bndlitexpr n)
             return n.val;
+
+        if(root is bndvarexpr v) 
+            return vars[v.name];
+
+        if(root is bndassignexpr a) {
+            var val = evalexpr(a.expr);
+            vars[a.name] = val;
+            return val;
+        }
 
         if(root is bnduniexpr u) {
             var oand = evalexpr(u.oand);

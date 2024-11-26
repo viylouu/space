@@ -92,6 +92,17 @@ space helloworld {
         ;;backwards for loop
         for(i: i32 :> 100, >0, --)
             spk(;"bye {i}")
+
+        a: i64 :> 1
+
+        ;;square a and subtract 1 from a every time
+        for(i: i32, 0, 100) {
+            ;;set a to a *= a
+            a :> * a
+            ;;subtract from a
+            a :> --
+            spk(a)
+        }
     }
 
     ;; rfn makes a function with a return type noted after rfn
