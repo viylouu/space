@@ -1,10 +1,9 @@
 ﻿internal sealed class bndvarexpr : bndexpr {
-    public bndvarexpr(string name, Type cstype) {
-        this.name = name;
-        this.cstype = cstype;
+    public bndvarexpr(varsym var) {
+        this.var = var;
     }
 
-    public override bndnodetype type => throw new NotImplementedException();
-    public string name { get; }
-    public override Type cstype { get; }
+    public override bndnodetype type => bndnodetype.varexpr;
+    public varsym var { get; }
+    public override Type cstype => var.cstype;
 }

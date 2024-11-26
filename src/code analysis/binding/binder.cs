@@ -1,8 +1,8 @@
 ﻿internal sealed class binder {
     readonly diagbag _diags = new();
-    Dictionary<string, object> vars;
+    Dictionary<varsym, object> vars;
 
-    public binder(Dictionary<string, object> vars) => this.vars = vars;
+    public binder(Dictionary<varsym, object> vars) => this.vars = vars;
 
     public diagbag diags => _diags;
 
@@ -29,32 +29,28 @@
     bndexpr bindnameexpr(nameexprsyn syn) {
         var name = syn.identtok.txt;
 
-        if(!vars.TryGetValue(name, out var val)) {
+        var var = vars.Keys.FirstOrDefault(v => v.name == name);
+
+        if(var == null) {
             _diags.report_undef_name(syn.identtok.span, name);
             return new bndlitexpr(0);
         }
 
-        var type = val.GetType();
-        return new bndvarexpr(name, type);
+        return new bndvarexpr(var);
     }
 
     bndexpr bindassignexpr(assignexprsyn syn) {
         var name = syn.identtok.txt;
         var bndexpr = bindexpr(syn.expr);
 
-        var defval =
-            bndexpr.cstype == typeof(int)
-            ? (object)0
-            : bndexpr.cstype == typeof(bool)
-            ? false
-            : null;
+        var existvar = vars.Keys.FirstOrDefault(v => v.name == name);
+        if(existvar != null)
+            vars.Remove(existvar);
 
-        if(defval == null)
-            throw new Exception($"Unsupported var type <{bndexpr.cstype}>");
+        var var = new varsym(name, bndexpr.cstype);
+        vars[var] = null;
 
-        vars[name] = defval;
-
-        return new bndassignexpr(name, bndexpr);
+        return new bndassignexpr(var, bndexpr);
     }
 
     bndexpr bindparenexpr(parenexprsyn syn)

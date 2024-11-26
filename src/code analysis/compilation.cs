@@ -5,7 +5,7 @@
 
     public syntree syn { get; }
 
-    public evalres eval(Dictionary<string, object> vars) {
+    public evalres eval(Dictionary<varsym, object> vars) {
         var binder = new binder(vars);
         var bndexpr = binder.bindexpr(syn.root);
 

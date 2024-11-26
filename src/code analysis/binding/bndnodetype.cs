@@ -2,5 +2,6 @@
     uniexpr,
     litexpr,
     binexpr,
-    assignexpr
+    assignexpr,
+    varexpr
 }
