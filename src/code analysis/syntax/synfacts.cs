@@ -1,4 +1,4 @@
-﻿internal static class synfacts {
+﻿public static class synfacts {
     public static int getbinoperprec(this syntype type) {
         switch(type) {
             case syntype.startok:
@@ -24,6 +24,20 @@
         }
     }
 
+    public static IEnumerable<syntype> getbinopertypes() {
+        var types = (syntype[]) Enum.GetValues(typeof(syntype));
+        foreach(var t in types)
+            if(getbinoperprec(t) > 0)
+                yield return t;
+    }
+
+    public static IEnumerable<syntype> getuniopertypes() {
+        var types = (syntype[])Enum.GetValues(typeof(syntype));
+        foreach(var t in types)
+            if(getunioperprec(t) > 0)
+                yield return t;
+    }
+
     public static int getunioperprec(this syntype type) {
         switch(type) {
             case syntype.bangtok:
@@ -43,6 +57,49 @@
                 return syntype.falsekw;
             default:
                 return syntype.identtok;
+        }
+    }
+
+    public static string gettxt(syntype type) {
+        switch(type) {
+            case syntype.plustok:
+                return "+";
+            case syntype.minustok:
+                return "-";
+            case syntype.startok:
+                return "*";
+            case syntype.slashtok:
+                return "/";
+            case syntype.bangtok:
+                return "!";
+            case syntype.amptok:
+                return "&";
+            case syntype.bartok:
+                return "|";
+            case syntype.ampamptok:
+                return "&&";
+            case syntype.barbartok:
+                return "||";
+            case syntype.eqeqtok:
+                return "==";
+            case syntype.bangeqtok:
+                return "!=";
+            case syntype.colgreattok:
+                return ":>";
+            case syntype.coltok:
+                return ":";
+            case syntype.colcoltok:
+                return "::";
+            case syntype.oparentok:
+                return "(";
+            case syntype.cparentok:
+                return ")";
+            case syntype.truekw:
+                return "true";
+            case syntype.falsekw:
+                return "false";
+            default:
+                return null;
         }
     }
 }

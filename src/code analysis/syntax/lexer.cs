@@ -1,7 +1,11 @@
 ﻿internal sealed class lexer {
     readonly string _txt;
+    readonly diagbag _diags = new();
     int _pos;
-    diagbag _diags = new();
+
+    int _start;
+    syntype _type;
+    object _val;
 
     public lexer(string txt) {
         _txt = txt;
@@ -22,92 +26,146 @@
         return _txt[ind];
     }
 
-    void next() => _pos++;
-
     public syntok lex() {
-        if(_pos >= _txt.Length)
-            return new(syntype.eoftok, _pos, "\0", null);
-
-        if(char.IsDigit(cur)) {
-            var start = _pos;
-
-            while(char.IsDigit(cur))
-                next();
-
-            var len = _pos - start;
-            var text = _txt.Substring(start, len);
-
-            if(!int.TryParse(text, out var val))
-                _diags.report_invalid_num(new txtspan(start, len), _txt, typeof(int));
-
-            return new(syntype.numtok, start, text, val);
-        }
-
-        if(char.IsWhiteSpace(cur)) {
-            var start = _pos;
-
-            while(char.IsWhiteSpace(cur))
-                next();
-
-            var len = _pos - start;
-            var text = _txt.Substring(start, len);
-
-            return new(syntype.wstok, start, text, null);
-        }
-
-        if(char.IsLetter(cur)) {
-            var start = _pos;
-
-            while(char.IsLetter(cur))
-                next();
-
-            var len = _pos - start;
-            var text = _txt.Substring(start, len);
-
-            var type = synfacts.getkwtype(text);
-
-            return new(type, start, text, null);
-        }
+        _start = _pos;
+        _type = syntype.uktok;
+        _val = null;
 
         switch(cur) {
+            case '\0':
+                _type = syntype.eoftok;
+                break;
             case '+':
-                return new(syntype.plustok, _pos++, "+", null);
+                _type = syntype.plustok;
+                _pos++;
+                break;
             case '-':
-                return new(syntype.minustok, _pos++, "-", null);
+                _type = syntype.minustok;
+                _pos++;
+                break;
             case '*':
-                return new(syntype.startok, _pos++, "*", null);
+                _type = syntype.startok;
+                _pos++;
+                break;
             case '/':
-                return new(syntype.slashtok, _pos++, "/", null);
+                _type = syntype.slashtok;
+                _pos++;
+                break;
             case '(':
-                return new(syntype.oparentok, _pos++, "(", null);
+                _type = syntype.oparentok;
+                _pos++;
+                break;
             case ')':
-                return new(syntype.cparentok, _pos++, ")", null);
+                _type = syntype.cparentok;
+                _pos++;
+                break;
 
             case '&':
-                if(ahead == '&')
-                    return new(syntype.ampamptok, _pos += 2, "&&", null);
-                return new(syntype.amptok, _pos++, "&", null);
+                if(ahead == '&') {
+                    _type = syntype.ampamptok;
+                    _pos+=2;
+                    break;
+                }
+                _type = syntype.amptok;
+                _pos++;
+                break;
             case '|':
-                if(ahead == '|')
-                    return new(syntype.barbartok, _pos += 2, "||", null);
-                return new(syntype.bartok, _pos++, "|", null);
+                if(ahead == '|') {
+                    _type = syntype.barbartok;
+                    _pos+=2;
+                    break;
+                }
+                _type = syntype.bartok;
+                _pos++;
+                break;
             case '=':
-                if(ahead == '=')
-                    return new(syntype.eqeqtok, _pos += 2, "==", null);
+                if(ahead == '=') {
+                    _type = syntype.eqeqtok;
+                    _pos+=2;
+                    break;
+                }
                 break;
             case '!':
-                if(ahead == '=')
-                    return new(syntype.bangeqtok, _pos += 2, "!=", null);
-                return new(syntype.bangtok, _pos++, "!", null);
+                if(ahead == '=') {
+                    _type = syntype.bangeqtok;
+                    _pos+=2;
+                    break;
+                }
+                _type = syntype.bangtok;
+                _pos++;
+                break;
             case ':':
-                if(ahead == '>')
-                    return new(syntype.colgreattok, _pos += 2, ":>", null);
-                else if(ahead == ':')
-                    return new(syntype.colcoltok, _pos += 2, "::", null);           //not implemented
-                return new(syntype.coltok, _pos++, ":", null);                      //not implemented
+                if(ahead == '>') {
+                    _type = syntype.colgreattok;
+                    _pos+=2;
+                    break;
+                } else if(ahead == ':') {
+                    _type = syntype.colcoltok;
+                    _pos += 2;
+                    break;
+                }
+                _type = syntype.coltok;  
+                _pos++;
+                break;
+            case '0': case '1': case '2': case '3': case '4':
+            case '5': case '6': case '7': case '8': case '9':
+                readnumtok();
+                break;
+            case ' ':
+            case '\t':
+            case '\n':
+            case '\r':
+                readws();
+                break;
+            default:
+                if(char.IsLetter(cur))
+                    readidentorkw();
+                else if(char.IsWhiteSpace(cur))
+                    readws();
+                else {
+                    _diags.report_bad_char(_pos, cur);
+                    _pos++;
+                }
+                break;
         }
 
-        _diags.report_bad_char(_pos, cur);
-        return new(syntype.uktok, _pos++, _txt.Substring(_pos - 1, 1), null);
+        var text = synfacts.gettxt(_type);
+
+        var len = _pos - _start;
+
+        if(text == null)
+            text = _txt.Substring(_start, len);
+
+        return new(_type, _start, text, _val);
+    }
+
+    void readidentorkw() {
+        while(char.IsLetter(cur))
+            _pos++;
+
+        var len = _pos - _start;
+        var text = _txt.Substring(_start, len);
+        _type = synfacts.getkwtype(text);
+    }
+
+    private void readws() {
+        while(char.IsWhiteSpace(cur))
+            _pos++;
+
+        _type = syntype.wstok;
+    }
+
+    void readnumtok() {
+        while(char.IsDigit(cur))
+            _pos++;
+
+        var len = _pos - _start;
+        var text = _txt.Substring(_start, len);
+
+        if(!int.TryParse(text, out var val))
+            _diags.report_invalid_num(new txtspan(_start, len), _txt, typeof(int));
+
+        _val = val;
+        _type = syntype.numtok;
     }
 }
