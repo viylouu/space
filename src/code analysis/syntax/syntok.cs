@@ -11,5 +11,5 @@
     public int pos { get; }
     public string txt { get; }
     public object val { get; }
-    public txtspan span => new(pos, txt.Length);
+    public override txtspan span => new(pos, txt.Length);
 }
