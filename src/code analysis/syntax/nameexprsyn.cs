@@ -5,8 +5,4 @@
 
     public override syntype type => syntype.nameexpr;
     public syntok identtok { get; }
-
-    public override IEnumerable<synnode> getchildren() {
-        yield return identtok;
-    }
 }

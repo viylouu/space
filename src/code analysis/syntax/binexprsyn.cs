@@ -10,10 +10,4 @@
     public exprsyn right { get; }
 
     public override syntype type => syntype.binexpr;
-
-    public override IEnumerable<synnode> getchildren() {
-        yield return left;
-        yield return oper;
-        yield return right;
-    }
 }

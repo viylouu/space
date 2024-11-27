@@ -10,8 +10,4 @@
 
     public syntok littok { get; }
     public object val { get; } 
-
-    public override IEnumerable<synnode> getchildren() {
-        yield return littok;
-    }
 }

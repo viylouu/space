@@ -8,9 +8,4 @@
     public exprsyn oand { get; }
 
     public override syntype type => syntype.uniexpr;
-
-    public override IEnumerable<synnode> getchildren() {
-        yield return oper;
-        yield return oand;
-    }
 }

@@ -12,8 +12,4 @@
     public string txt { get; }
     public object val { get; }
     public txtspan span => new(pos, txt.Length);
-
-    public override IEnumerable<synnode> getchildren() {
-        return Enumerable.Empty<synnode>();
-    }
 }

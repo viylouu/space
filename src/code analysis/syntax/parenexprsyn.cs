@@ -10,10 +10,4 @@
     public syntok closeParen { get; }
 
     public override syntype type => syntype.parenexpr;
-
-    public override IEnumerable<synnode> getchildren() {
-        yield return openParen;
-        yield return expr;
-        yield return closeParen;
-    }
 }
