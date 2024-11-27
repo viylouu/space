@@ -6,7 +6,7 @@
     }
 
     public override syntype type => syntype.assignexpr;
-    public syntok identtok { get; } //identifier (not identity)
+    public syntok identtok { get; }
     public syntok eqtok { get; }
     public exprsyn expr { get; }
 }
