@@ -27,7 +27,7 @@
     }
 
     bndexpr bindnameexpr(nameexprsyn syn) {
-        var name = syn.identtok.txt;
+        var name = syn.identtok.text;
 
         var var = vars.Keys.FirstOrDefault(v => v.name == name);
 
@@ -40,7 +40,7 @@
     }
 
     bndexpr bindassignexpr(assignexprsyn syn) {
-        var name = syn.identtok.txt;
+        var name = syn.identtok.text;
         var bndexpr = bindexpr(syn.expr);
 
         var existvar = vars.Keys.FirstOrDefault(v => v.name == name);
@@ -68,7 +68,7 @@
         var bndoper = bndbinoper.bind(syn.oper.type, bndleft.cstype, bndright.cstype);
 
         if(bndoper == null) {
-            _diags.report_undef_bin_oper(syn.oper.span, syn.oper.txt, bndleft.cstype, bndright.cstype);
+            _diags.report_undef_bin_oper(syn.oper.span, syn.oper.text, bndleft.cstype, bndright.cstype);
             return bndleft;
         }
 
@@ -80,7 +80,7 @@
         var bndoper = bndunioper.bind(syn.oper.type, bndoand.cstype);
 
         if(bndoper == null) {
-            _diags.report_undef_uni_oper(syn.oper.span, syn.oper.txt, bndoand.cstype);
+            _diags.report_undef_uni_oper(syn.oper.span, syn.oper.text, bndoand.cstype);
             return bndoand;
         }
         

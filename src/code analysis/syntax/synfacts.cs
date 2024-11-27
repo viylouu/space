@@ -60,7 +60,7 @@
         }
     }
 
-    public static string gettxt(syntype type) {
+    public static string gettext(syntype type) {
         switch(type) {
             case syntype.plustok:
                 return "+";

@@ -7,10 +7,10 @@ internal sealed class parser {
 
     public diagbag diags => _diags;
 
-    public parser(string txt) {
+    public parser(string text) {
         var toks = new List<syntok>();
 
-        var lex = new lexer(txt);
+        var lex = new lexer(text);
 
         syntok tok;
         do {

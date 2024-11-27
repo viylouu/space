@@ -106,9 +106,9 @@ space helloworld {
     }
 
     ~ rfn makes a function with a return type noted after rfn
-    rfn str text(txt: str) {
+    rfn str text(text: str) {
         ~ putting f makes it so you can do "text {input} text {input}"
-        ret f"Hello {txt}!"
+        ret f"Hello {text}!"
     }
 
     ~ fibonacci example
