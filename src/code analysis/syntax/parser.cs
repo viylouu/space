@@ -1,7 +1,7 @@
 ﻿internal sealed class parser {
     readonly syntok[] _toks;
+    readonly diagbag _diags = new();
     int _pos;
-    diagbag _diags = new();
 
     public diagbag diags => _diags;
 
@@ -96,24 +96,41 @@
     exprsyn parsepriexpr() {
         switch(cur.type) {
             case syntype.oparentok:
-                var left = nextTok();
-                var expr = parseexpr();
-                var right = matchTok(syntype.cparentok);
-                return new parenexprsyn(left, expr, right);
+                return parseparenexpr();
 
             case syntype.falsekw:
             case syntype.truekw:
-                var kwtok = nextTok();
-                var val = kwtok.type == syntype.truekw;
-                return new litexprsyn(kwtok, val);
+                return parseboollit();
+
+            case syntype.numtok:
+                return parsenumlit();
 
             case syntype.identtok:
-                var ident = nextTok();
-                return new nameexprsyn(ident);
-
             default:
-                var numTok = matchTok(syntype.numtok);
-                return new litexprsyn(numTok);
+                return parsenameexpr();
         }
+    }
+
+    exprsyn parsenumlit() { 
+        var numtok = matchTok(syntype.numtok);
+        return new litexprsyn(numtok);
+    }
+
+    exprsyn parseparenexpr() {
+        var left = matchTok(syntype.oparentok);
+        var expr = parseexpr();
+        var right = matchTok(syntype.cparentok);
+        return new parenexprsyn(left, expr, right);
+    }
+
+    exprsyn parseboollit() {
+        var istrue = cur.type == syntype.truekw;
+        var kwtok = matchTok(istrue ? syntype.truekw : syntype.falsekw);
+        return new litexprsyn(kwtok, istrue);
+    }
+
+    exprsyn parsenameexpr() {
+        var ident = matchTok(syntype.identtok);
+        return new nameexprsyn(ident);
     }
 }
