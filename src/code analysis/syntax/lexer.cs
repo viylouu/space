@@ -1,5 +1,5 @@
 ﻿internal sealed class lexer {
-    readonly string _text;
+    readonly srctext _text;
     readonly diagbag _diags = new();
     int _pos;
 
@@ -7,7 +7,7 @@
     syntype _type;
     object _val;
 
-    public lexer(string text) {
+    public lexer(srctext text) {
         _text = text;
     }
 
@@ -134,7 +134,7 @@
         var len = _pos - _start;
 
         if(text == null)
-            text = _text.Substring(_start, len);
+            text = _text.ToString(_start, len);
 
         return new(_type, _start, text, _val);
     }
@@ -144,7 +144,7 @@
             _pos++;
 
         var len = _pos - _start;
-        var text = _text.Substring(_start, len);
+        var text = _text.ToString(_start, len);
         _type = synfacts.getkwtype(text);
     }
 
@@ -160,10 +160,10 @@
             _pos++;
 
         var len = _pos - _start;
-        var text = _text.Substring(_start, len);
+        var text = _text.ToString(_start, len);
 
         if(!int.TryParse(text, out var val))
-            _diags.report_invalid_num(new textspan(_start, len), _text, typeof(int));
+            _diags.report_invalid_num(new textspan(_start, len), text, typeof(int));
 
         _val = val;
         _type = syntype.numtok;

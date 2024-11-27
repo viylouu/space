@@ -3,11 +3,12 @@
 internal sealed class parser {
     readonly ImmutableArray<syntok> _toks;
     readonly diagbag _diags = new();
+    readonly srctext _text;
     int _pos;
 
     public diagbag diags => _diags;
 
-    public parser(string text) {
+    public parser(srctext text) {
         var toks = new List<syntok>();
 
         var lex = new lexer(text);
@@ -21,6 +22,7 @@ internal sealed class parser {
                 toks.Add(tok);
         } while(tok.type != syntype.eoftok);
 
+        _text = text;
         _toks = toks.ToImmutableArray();
         _diags.AddRange(lex.diags);
     }
@@ -51,7 +53,7 @@ internal sealed class parser {
     public syntree parse() {
         var expr = parseexpr();
         var eoftok = matchTok(syntype.eoftok);
-        return new syntree(_diags.ToImmutableArray(), expr, eoftok);
+        return new syntree(_text, _diags.ToImmutableArray(), expr, eoftok);
     }
 
     exprsyn parseexpr() {
