@@ -1,11 +1,13 @@
-﻿public sealed class syntree {
-    public syntree(IEnumerable<diag> diags, exprsyn root, syntok eoftok) {
+﻿using System.Collections.Immutable;
+
+public sealed class syntree {
+    public syntree(ImmutableArray<diag> diags, exprsyn root, syntok eoftok) {
         this.root = root;
         this.eoftok = eoftok;
-        this.diags = diags.ToArray();
+        this.diags = diags;
     }
 
-    public IReadOnlyList<diag> diags { get; }
+    public ImmutableArray<diag> diags { get; }
     public exprsyn root { get; }
     public syntok eoftok { get; }
 
