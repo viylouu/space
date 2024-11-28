@@ -31,21 +31,19 @@ bool   boolean
 str    string
 chr    character
 
-v2     Vector 2 (signed 2 dimensional float)
-v3     Vector 3 (signed 3 dimenstional float)
-v4     Vector 4
+(for the next section, you can replace N with any of the bit sizes of the above numbers for the specified type)
 
-uv2    Unsigned Vector 2 (2 dimensional unsigned float)
-uv3    Unsigned Vector 3
-uv4    Unsigned Vector 4
+fNv2   Vector 2 (signed 2 dimensional float)
+fNv3   Vector 3 (signed 3 dimenstional float)
+fNv4   Vector 4
 
-iv2    Integer Vector 2 (signed 2 dimensional integer)
-iv3    Integer Vector 3
-iv4    Integer Vector 4
+iNv2   Integer Vector 2 (signed 2 dimensional integer)
+iNv3   Integer Vector 3
+iNv4   Integer Vector 4
 
-uiv2   Unsigned Integer Vector 2
-uiv3   Unsigned Integer Vector 3
-uiv4   Unsigned Integer Vector 4
+uiNv2  Unsigned Integer Vector 2
+uiNv3  Unsigned Integer Vector 3
+uiNv4  Unsigned Integer Vector 4
 
 }~
 
