@@ -5,7 +5,7 @@ a custom language
 how to use
 
 ```
-~ single line comment
+~~ single line comment
 
 ~{ multi
    line
@@ -69,52 +69,60 @@ unary
 
 }~
 
-~ "hello_world.orbt"
+~~ "hello_world.orbt"
 
-~ space represents making a class
+~~ space represents making a class
 
 space helloworld {
-    ~ fn makes a non returning function
+    ~~ fn makes a non returning function
     fn main() {
-        ~ spk works just like writeline
+        ~~ spk works just like writeline
 
-        ~ makes a new var of type string and sets the value to the function's return
+        ~~ makes a new var of type string and sets the value to the function's return
         texttosay: str :> text("World")
 
         spk(texttosay)
 
-        ~ say hi, but only say even numbers
+        ~~ say hi, but only say even numbers
         for(i: i32, 0 ~> 100, 2)
             spk(f"hi {i}")
 
-        ~ backwards for loop
+        ~~ backwards for loop
         for(i: i32, 100 <~ 0)
             spk(f"bye {i}")
 
         a: i64 :> 1
 
-        ~ square a and subtract 1 from a every time
-        for(i: i32, 0 ~> 100) {
-            ~ set a to 'a *= a'
+        ~~ square a and subtract 1 from a every time
+        for(i: i32, 0 ~> 100) { ~~ would be the same as 'for(int i = 0; i < 100; i++)' in c#
+            ~~ set a to 'a *= a'
             a :> * a
-            ~ subtract from a
+            ~~ subtract from a
             a :> --
             spk(a)
         }
+
+        ~~ make a 2D array of integers with size 3,2
+        map: i32^2[3,2]
+
+        for(x: i8, 0 ~> map.len(0))
+            for(y: i8, 0 ~> map.len(1))
+                ~~ set map[x,y] to the sin of x/y
+                map[x,y] :> m.sin(x/y)
     }
 
-    ~ rfn makes a function with a return type noted after rfn
+    ~~ rfn makes a function with a return type noted after rfn
     rfn str text(text: str) {
-        ~ putting f makes it so you can do "text {input} text {input}"
+        ~~ putting f makes it so you can do "text {input} text {input}"
         ret f"Hello {text}!"
     }
 
-    ~ fibonacci example
+    ~~ fibonacci example
     rfn i32 fib(n: i32) {
         ret (n < 2) :: n ` fib(n-1)+fib(n-2)
     }
 
-    ~ example of func on one line
+    ~~ example of func on one line
     fn 1plus_a(&a: i32) :> a :> ++
 
     ~{
