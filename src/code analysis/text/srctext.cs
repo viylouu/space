@@ -49,7 +49,7 @@ public sealed class srctext {
             }
         }
 
-        if(pos > linestart)
+        if(pos >= linestart)
             addline(res, srctxt, pos, linestart, 0);
 
         return res.ToImmutable();
